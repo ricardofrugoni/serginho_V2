@@ -278,7 +278,7 @@ function updateCharts() {
     if (growthChart) {
         growthChart.data.labels = monthData.map(d => `M${d.month}`);
         growthChart.data.datasets[0].data = monthData.map(d => d.placasFinais);
-        growthChart.data.datasets[1].data = monthData.map(d => d.qtdSinistros * 100); // Multiplicar por 100 para visualização
+        growthChart.data.datasets[1].data = monthData.map(d => d.qtdSinistros); // Valores reais sem multiplicação
         growthChart.update('none');
     }
 }
@@ -420,12 +420,12 @@ function initializeGrowthChart() {
                     yAxisID: 'y'
                 },
                 {
-                    label: 'Sinistros (x100)',
+                    label: 'Quantidade Sinistros',
                     data: [],
                     backgroundColor: 'rgba(255, 87, 34, 0.8)',
                     borderColor: '#FF5722',
                     borderWidth: 1,
-                    yAxisID: 'y'
+                    yAxisID: 'y1'
                 }
             ]
         },
@@ -463,7 +463,7 @@ function initializeGrowthChart() {
                             if (context.datasetIndex === 0) {
                                 return 'Placas Ativas: ' + formatNumber(context.parsed.y);
                             } else {
-                                return 'Sinistros: ' + formatNumber(context.parsed.y / 100);
+                                return 'Sinistros: ' + formatNumber(context.parsed.y);
                             }
                         }
                     }
@@ -495,6 +495,24 @@ function initializeGrowthChart() {
                         }
                     },
                     grid: { color: 'rgba(255,255,255,0.1)' }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    ticks: { 
+                        color: 'white',
+                        font: {
+                            family: 'Manrope',
+                            weight: '500'
+                        },
+                        callback: function(value) {
+                            return formatNumber(value);
+                        }
+                    },
+                    grid: {
+                        drawOnChartArea: false,
+                    }
                 }
             }
         }
